@@ -1,26 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import Image from "./Image";
+import { withAuthenticator } from "aws-amplify-react";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import HomePage from "./pages/HomePage";
+import { Auth } from "aws-amplify";
+
+import "./App.css";
+import { Button } from "element-react";
+import Navbar from "./components/NavBar";
 
 function App() {
+  async function handleSignOut() {
+    try {
+      await Auth.signOut();
+    } catch (err) {
+      console.log("error signing out user", err);
+    }
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <>
+        <Navbar handleSignOut={handleSignOut} />
+
+        <div className="app-container">
+          <Route exact path="/" component={HomePage} />
+          <Route path="/addImage" component={() => <Image />} />
+        </div>
+      </>
+    </Router>
   );
 }
 
-export default App;
+export default withAuthenticator(App);

@@ -1,0 +1,15 @@
+
+type Image @model {
+  id: ID!
+  description: String
+  file :S3Object!
+  flagged : Boolean
+  tagged : Boolean
+}
+
+type S3Object{
+
+  bucket: String!
+  region: String!
+  key: String!
+}
